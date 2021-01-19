@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {getOrders} from '../../apiCalls';
+import { getOrders, postNewOrder } from '../../apiCalls';
 import Orders from '../../components/Orders/Orders';
 import OrderForm from '../../components/OrderForm/OrderForm';
 
@@ -19,7 +19,12 @@ class App extends Component {
   }
 
   updateOrders = (name, ingredients) => {
-    console.log(name, ingredients)
+    const newOrder = {
+      name: name,
+      ingredients: ingredients
+    }
+
+    postNewOrder(newOrder)
   }
 
   render() {
