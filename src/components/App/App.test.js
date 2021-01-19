@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import App from './App.js';
 import { getOrders, postNewOrder } from '../../apiCalls.js';
+import { scryRenderedComponentsWithType } from 'react-dom/test-utils';
 jest.mock('../../apiCalls.js')
 
 describe('App', () => {
@@ -22,13 +23,16 @@ describe('App', () => {
 
     getOrders.mockResolvedValueOnce(sampleOrders)
 
+    // render(
+    //   <App />
+    // )
+  })
+
+  it('should render correctly', async () => { 
     render(
       <App />
     )
-  })
 
-  it('should render correctly', async () => {
-    
     const title = screen.getByText('Burrito Builder')
     const nameInput = screen.getByPlaceholderText('Name')
     const beansButton = screen.getByTestId('beans')
@@ -56,38 +60,45 @@ describe('App', () => {
     expect(orderIngredient3).toHaveLength(2)
   })
 
-  // it('should be able to add a new order', async () => {
-  //   render(
-  //     <App />
-  //   )
-  //   const nameInput = screen.getByPlaceholderText('Name')
+  it('should be able to add a new order', async () => {
+    render(
+      <App />
+    )
 
-  //   userEvent.type(nameInput, 'Alyssa')
+    const nameInput = screen.getByPlaceholderText('Name')
 
-  //   const carnitasButton = screen.getByText('carnitas')
-  //   const picoDeGalloButton = screen.getByText('pico de gallo')
-  //   const gucamoleButton = screen.getByText('guacamole')
+    userEvent.type(nameInput, 'Kara')
 
-  //   userEvent.click(carnitasButton)
-  //   userEvent.click(picoDeGalloButton)
-  //   userEvent.click(gucamoleButton)
-  //   userEvent.click(gucamoleButton)
+    const carnitasButton = screen.getByTestId('carnitas')
+    const picoDeGalloButton = screen.getByTestId('pico de gallo')
+    const gucamoleButton = screen.getByTestId('guacamole')
 
-  //   const submitButton = screen.getByText('Submit Order')
+    userEvent.click(carnitasButton)
+    userEvent.click(picoDeGalloButton)
+    userEvent.click(gucamoleButton)
 
-  //   userEvent.click(submitButton)
+    const submitButton = screen.getByText('Submit Order')
     
-  //   const newOrder = {
-  //     name: 'Alyssa',
-  //     ingredients: ['carnitas', 'pico de gallo', 'guacamole']
-  //   }
+    userEvent.click(submitButton)
+    
+    const newOrder = {
+      name: 'Kara',
+      ingredients: ['carnitas', 'pico de gallo', 'guacamole']
+    }
+      
+    postNewOrder.mockResolvedValueOnce(newOrder)
 
-  //   postNewOrder.mockResolvedValueOnce(newOrder)
+    sampleOrders.orders.push(newOrder)
 
-  //   const newOrderName = await waitFor(() => screen.getByText('Alyssa'))
-  //   const newOrderIngredients = await waitFor(() => screen.getByText('carnitas'))
+    getOrders.mockResolvedValueOnce(sampleOrders)
 
-  //   expect(newOrderName).toBeInTheDocument()
-  //   expect(newOrderIngredients).toBeInTheDocument()
-  // })
+    const newOrderName = await waitFor(() => screen.getByText('Kara'))
+    const newOrderIngredient = await waitFor(() => screen.getAllByText('carnitas'))
+
+    expect(newOrderName).toBeInTheDocument()
+    expect(newOrderIngredient).toHaveLength(3)
+  })
+
+  it('should be able to delete an order', () => {
+  })
 })
