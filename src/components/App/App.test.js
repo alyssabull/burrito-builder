@@ -22,10 +22,6 @@ describe('App', () => {
     }]}
 
     getOrders.mockResolvedValueOnce(sampleOrders)
-
-    render(
-      <App />
-    )
   })
 
   it('should render correctly', async () => { 
@@ -87,20 +83,16 @@ describe('App', () => {
     postNewOrder.mockResolvedValueOnce(newOrder)
 
     userEvent.click(submitButton)
-    
-    screen.debug()
 
+    sampleOrders.orders.push(newOrder)
 
+    getOrders.mockResolvedValueOnce(sampleOrders)
 
-    // sampleOrders.orders.push(newOrder)
+    const newOrderName = await waitFor(() => screen.getByText('Kara'))
+    const newOrderIngredient = await waitFor(() => screen.getAllByText('carnitas'))
 
-    // getOrders.mockResolvedValueOnce(sampleOrders)
-
-    // const newOrderName = await waitFor(() => screen.getByText('Kara'))
-    // const newOrderIngredient = await waitFor(() => screen.getAllByText('carnitas'))
-
-    // expect(newOrderName).toBeInTheDocument()
-    // expect(newOrderIngredient).toHaveLength(3)
+    expect(newOrderName).toBeInTheDocument()
+    expect(newOrderIngredient).toHaveLength(3)
   })
 
   it('should be able to delete an order', () => {
