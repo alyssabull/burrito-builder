@@ -107,7 +107,7 @@ describe('App', () => {
 
     userEvent.click(submitButton)
 
-   const name = screen.queryByText('Leta')
+    const name = screen.queryByText('Leta')
     
     expect(name).not.toBeInTheDocument()
   })
@@ -118,8 +118,6 @@ describe('App', () => {
     userEvent.click(deleteButton)
 
     const order1Name = await waitFor(() => screen.queryByText('Kara'))
-
-    screen.debug()
 
     expect(order1Name).not.toBeInTheDocument()
   })
