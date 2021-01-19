@@ -28,6 +28,8 @@ class OrderForm extends Component {
   handleSubmit = e => {
     if (this.state.name !== '' && this.state.ingredients.length > 0) {
       this.props.updateOrders(this.state.name, this.state.ingredients)
+    } else {
+      alert('Please enter a name and choose at least one ingredient!')
     }
     this.clearInputs();
   }
