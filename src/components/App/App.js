@@ -25,8 +25,11 @@ class App extends Component {
   }
 
   deleteOrder = (id) => {
+    const updatedOrders = this.state.orders.filter(order => {
+      return order.id !== id
+    })
     deleteOrder(id)
-    .then(data => console.log(data))
+    .then(data => this.setState({updatedOrders}))
     .catch(error => console.log(error))
     this.componentDidMount()
   }

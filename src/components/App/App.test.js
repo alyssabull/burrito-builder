@@ -45,7 +45,7 @@ describe('App', () => {
     getOrders.mockResolvedValueOnce(sampleOrders)
     postNewOrder.mockResolvedValueOnce(newOrder)
     getOrders.mockResolvedValueOnce(updatedSampleOrders)
-    deleteOrder.mockResolvedValueOnce(1)
+    deleteOrder.mockResolvedValueOnce(sampleOrders)
 
     render(
       <App />
@@ -110,5 +110,17 @@ describe('App', () => {
    const name = screen.queryByText('Leta')
     
     expect(name).not.toBeInTheDocument()
+  })
+
+  it('should be able to delete a reservation', async () => {
+    const deleteButton = screen.getByTestId('delete-3')
+
+    userEvent.click(deleteButton)
+
+    const order1Name = await waitFor(() => screen.queryByText('Kara'))
+
+    screen.debug()
+
+    expect(order1Name).not.toBeInTheDocument()
   })
 })
