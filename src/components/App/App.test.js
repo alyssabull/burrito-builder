@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import App from './App.js';
@@ -23,9 +23,9 @@ describe('App', () => {
 
     getOrders.mockResolvedValueOnce(sampleOrders)
 
-    // render(
-    //   <App />
-    // )
+    render(
+      <App />
+    )
   })
 
   it('should render correctly', async () => { 
@@ -79,8 +79,6 @@ describe('App', () => {
 
     const submitButton = screen.getByText('Submit Order')
     
-    userEvent.click(submitButton)
-    
     const newOrder = {
       name: 'Kara',
       ingredients: ['carnitas', 'pico de gallo', 'guacamole']
@@ -88,15 +86,21 @@ describe('App', () => {
       
     postNewOrder.mockResolvedValueOnce(newOrder)
 
-    sampleOrders.orders.push(newOrder)
+    userEvent.click(submitButton)
+    
+    screen.debug()
 
-    getOrders.mockResolvedValueOnce(sampleOrders)
 
-    const newOrderName = await waitFor(() => screen.getByText('Kara'))
-    const newOrderIngredient = await waitFor(() => screen.getAllByText('carnitas'))
 
-    expect(newOrderName).toBeInTheDocument()
-    expect(newOrderIngredient).toHaveLength(3)
+    // sampleOrders.orders.push(newOrder)
+
+    // getOrders.mockResolvedValueOnce(sampleOrders)
+
+    // const newOrderName = await waitFor(() => screen.getByText('Kara'))
+    // const newOrderIngredient = await waitFor(() => screen.getAllByText('carnitas'))
+
+    // expect(newOrderName).toBeInTheDocument()
+    // expect(newOrderIngredient).toHaveLength(3)
   })
 
   it('should be able to delete an order', () => {

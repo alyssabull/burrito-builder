@@ -12,10 +12,10 @@ class OrderForm extends Component {
 
   handleIngredientChange = e => {
     e.preventDefault();
-    const checkIngredientList = this.state.ingredients.find(ingredient => {
+    const checkIngredientList = this.state.ingredients.filter(ingredient => {
       return ingredient === e.target.name
     })
-    if (!checkIngredientList) {
+    if (checkIngredientList.length < 2) {
       this.setState({ingredients: [...this.state.ingredients, e.target.name]})
     }
   }

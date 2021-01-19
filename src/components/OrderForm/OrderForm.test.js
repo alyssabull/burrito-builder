@@ -51,7 +51,7 @@ describe('Order Form', () => {
     expect(order).toBeInTheDocument()
   })
 
-  it('should not be able to select the same ingredient more than once', () => {
+  it('should not be able to select the same ingredient more than twice', () => {
     const carnitasButton = screen.getByText('carnitas')
     const picoDeGalloButton = screen.getByText('pico de gallo')
     const gucamoleButton = screen.getByText('guacamole')
@@ -60,8 +60,9 @@ describe('Order Form', () => {
     userEvent.click(picoDeGalloButton)
     userEvent.click(gucamoleButton)
     userEvent.click(gucamoleButton)
+    userEvent.click(gucamoleButton)
 
-    const order = screen.getByText('Order: carnitas, pico de gallo, guacamole')
+    const order = screen.getByText('Order: carnitas, pico de gallo, guacamole, guacamole')
     expect(order).toBeInTheDocument()
   })
 
