@@ -64,4 +64,33 @@ describe('Order Form', () => {
     const order = screen.getByText('Order: carnitas, pico de gallo, guacamole')
     expect(order).toBeInTheDocument()
   })
+
+  it('should fired updateOrders on button click', () => {
+    const nameInput = screen.getByPlaceholderText('Name')
+
+    userEvent.type(nameInput, 'Alyssa')
+
+    const carnitasButton = screen.getByText('carnitas')
+    const picoDeGalloButton = screen.getByText('pico de gallo')
+    const gucamoleButton = screen.getByText('guacamole')
+
+    userEvent.click(carnitasButton)
+    userEvent.click(picoDeGalloButton)
+    userEvent.click(gucamoleButton)
+    userEvent.click(gucamoleButton)
+
+    const submitButton = screen.getByText('Submit Order')
+
+    userEvent.click(submitButton)
+
+    expect(mockUpdateOrders).toHaveBeenCalled()
+  })
+
+  it('should not fire updateOrders if no name has been entered', () => {
+    const submitButton = screen.getByText('Submit Order')
+
+    userEvent.click(submitButton)
+
+    expect(mockUpdateOrders).not.toHaveBeenCalled()
+  })
 })
