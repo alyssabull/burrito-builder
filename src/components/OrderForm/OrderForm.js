@@ -20,6 +20,11 @@ class OrderForm extends Component {
     }
   }
 
+  handleNameChange = e => {
+    e.preventDefault();
+    this.setState({name: e.target.value})
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     this.clearInputs();
