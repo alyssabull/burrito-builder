@@ -18,13 +18,10 @@ class App extends Component {
       .catch(err => console.error('Error fetching:', err));
   }
 
-  updateOrders = (name, ingredients) => {
-    const newOrder = {
-      name: name,
-      ingredients: ingredients
-    }
-
+  updateOrders = (newOrder) => {
     postNewOrder(newOrder)
+    .then(data => this.setState([...this.state.orders, data]))
+    .catch(error => console.log(error))  
   }
 
   deleteOrder = (id) => {
