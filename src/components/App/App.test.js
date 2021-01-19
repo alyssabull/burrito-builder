@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import App from './App.js';
-import { getOrders, postNewOrder } from '../../apiCalls.js';
+import { getOrders, postNewOrder, deleteOrder } from '../../apiCalls.js';
 jest.mock('../../apiCalls.js')
 
 describe('App', () => {
@@ -45,6 +45,7 @@ describe('App', () => {
     getOrders.mockResolvedValueOnce(sampleOrders)
     postNewOrder.mockResolvedValueOnce(newOrder)
     getOrders.mockResolvedValueOnce(updatedSampleOrders)
+    deleteOrder.mockResolvedValueOnce(1)
 
     render(
       <App />
@@ -96,5 +97,18 @@ describe('App', () => {
     
     expect(newOrderName).toBeInTheDocument()
     expect(newOrderIngredient).toHaveLength(3)
+  })
+
+  it('should not be able to add an order without any ingredients selected', async() => {
+    const nameInput = screen.getByPlaceholderText('Name')
+    userEvent.type(nameInput, 'Leta')
+
+    const submitButton = screen.getByText('Submit Order')
+
+    userEvent.click(submitButton)
+
+   const name = screen.queryByText('Leta')
+    
+    expect(name).not.toBeInTheDocument()
   })
 })
